@@ -1,99 +1,26 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Detect Faces Sample</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-    </head>
-    <body>
-        <script type="text/javascript">
-            function processImage() {
-                // Replace <Subscription Key> with your valid subscription key.
-                var subscriptionKey = "f37558408c1e4012b428855f5a6ac429";
-            
-                var uriBase =
-                    "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect";
-            
-                // Request parameters.
-                var params = {
-                    "returnFaceId": "true",
-                    "returnFaceLandmarks": "false",
-                    "returnFaceAttributes":
-                        "age,gender,headPose,smile,facialHair,glasses,emotion," +
-                        "hair,makeup,occlusion,accessories,blur,exposure,noise"
-                };
-            
-                // Display the image.
-                var sourceImageUrl = document.getElementById("inputImage").value;
-                document.querySelector("#sourceImage").src = sourceImageUrl;
-            
-                // Perform the REST API call.
-                $.ajax({
-                    url: uriBase + "?" + $.param(params),
-            
-                    // Request headers.
-                    beforeSend: function(xhrObj){
-                        xhrObj.setRequestHeader("Content-Type","application/json");
-                        xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
-                    },
-            
-                    type: "POST",
-            
-                    // Request body.
-                    data: '{"url": ' + '"' + sourceImageUrl + '"}',
-                })
-            
-                .done(function(data) {
-                    // Show formatted JSON on webpage.
-                   var glasses=data[0].faceAttributes.glasses
-                   if(glasses=='NoGlasses'){
-                    document.getElementById("gstate").innerHTML="i know you are not wearing glasses"
-                   }
-                    
-                   document.getElementById("info").innerHTML="age:  "+data[0].faceAttributes.age + "<br>"
-                   + "gender: "+data[0].faceAttributes.gender+"<br>"
-                   + "moustache: "+data[0].faceAttributes.facialHair.moustache*100 +"%"+"<br>"
-                   + "beard: "+data[0].faceAttributes.facialHair.beard*100 +"%"+"<br>"
-                   + "happiness: "+data[0].faceAttributes.emotion.happiness*100 +'%' +"<br>";
-                   if (data[0].faceAttributes.emotion.happiness<=0.5)
-                   {
-                    document.getElementById("info").innerHTML+="why you are not so happy"
-                   }
-                   else {
-                    document.getElementById("info").innerHTML+="you seem to be happy"
-                   }
-                })
-            
-                .fail(function(jqXHR, textStatus, errorThrown) {
-                    // Display error message.
-                    var errorString = (errorThrown === "") ?
-                        "Error. " : errorThrown + " (" + jqXHR.status + "): ";
-                    errorString += (jqXHR.responseText === "") ?
-                        "" : (jQuery.parseJSON(jqXHR.responseText).message) ?
-                            jQuery.parseJSON(jqXHR.responseText).message :
-                                jQuery.parseJSON(jqXHR.responseText).error.message;
-                    alert(errorString);
-                });
-            };
-        </script>
-        <h1>Detect Faces:</h1>
-Enter the URL to an image that includes a face to see something exciting  and then press analyse<br><br>
-Image to analyze: <input type="text" name="inputImage" id="inputImage"
-     />
-<button onclick="processImage()">Analyze </button><br><br>
-<div id="wrapper" style="width:1002px; display:table;">
-    <div id="jsonOutput" style="width:600px; display:table-cell;">
-        <p>use these urls if you want </p>
-        <p>https://upload.wikimedia.org/wikipedia/commons/c/c3/RH_Louise_Lillian_Gish.jpg</p>
-        <p>https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cg_face%2Cq_auto:good%2Cw_300/MTQyMDA0NDgwMzUzNzcyNjA2/mark-zuckerberg_gettyimages-512304736jpg.jpg</p>
-        Response:<br><br>
-        <p  id="info"></p>
-        <p  id="gstate"></p>
-    </div>
-    <div id="imageDiv" style="width:420px; display:table-cell;">
-        Source image:<br><br>
-        <img id="sourceImage" width="400" />
-    </div>
-</div>
+<head>
+<title>calc your grade</title>
+<script>
+    function updateOutput(){
+        var x = document.getElementById("calc").elements[0].value 
+        var y =document.getElementById("calc").elements[1].value
+        var a=(x*30)/100
+        a=(y-a)*100/70
+        document.getElementById("equals").innerHTML=a.toString()
+    }
+</script>
+</head>
+<body>
+    <div>enter your pariel grade in the first case than your total grade in the second case</div>>
+<form id="calc">
+    <input name="x" type="number" value="0" />
 
-    </body>
+<input name="y" type="number" value="0" />
+    </form>
+    <button onclick="updateOutput()">press when you are ready</button>>
+    <div class="alfa">yourfinal exam grade is:\n</div>
+    <div class="equals"></div>
+</body>
 </html>
